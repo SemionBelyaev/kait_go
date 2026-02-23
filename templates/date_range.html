@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Отчёт за период</title>
+    <style>
+        * {margin:0; padding:0; box-sizing:border-box;}
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #0f1419;
+            color: #e7e9ea;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 30px;
+        }
+        form {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        label {
+            color: #8b98a5;
+            font-size: 14px;
+        }
+        input[type="text"] {
+            background: #192734;
+            border: 1px solid #2f3b47;
+            color: #e7e9ea;
+            padding: 10px 14px;
+            border-radius: 8px;
+            width: 130px;
+            font-size: 14px;
+        }
+        input:focus {
+            outline: none;
+            border-color: #4a90d9;
+        }
+        input::placeholder {
+            color: #5c6e7e;
+        }
+        button {
+            background: #1d9bf0;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #1a8cd8;
+        }
+        .error {
+            background: #2d1f21;
+            border: 1px solid #67262a;
+            color: #f4212e;
+            padding: 16px 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+        }
+        .report-header {
+            background: #192734;
+            border: 1px solid #2f3b47;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+        .report-header h2 {
+            font-size: 18px;
+            margin-bottom: 8px;
+            color: #1d9bf0;
+        }
+        .report-header p {
+            color: #8b98a5;
+            font-size: 14px;
+        }
+        .report-header p strong {
+            color: #e7e9ea;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: #192734;
+            border: 1px solid #2f3b47;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .stat-card h3 {
+            color: #8b98a5;
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+        .stat-card p {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1d9bf0;
+        }
+        .stat-card small {
+            display: block;
+            margin-top: 6px;
+            color: #8b98a5;
+            font-size: 12px;
+        }
+        .table-wrapper {
+            background: #192734;
+            border-radius: 12px;
+            border: 1px solid #2f3b47;
+            overflow: hidden;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        th, td {
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 1px solid #2f3b47;
+        }
+        th {
+            background: #22303c;
+            color: #8b98a5;
+            font-weight: 500;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+        tr:hover {
+            background: #1c2732;
+        }
+        td a {
+            color: #1d9bf0;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .text-cell {
+            max-width: 400px;
+            color: #8b98a5;
+        }
+        .num {
+            text-align: center;
+            color: #e7e9ea;
+        }
+        .back {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 30px;
+            color: #8b98a5;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .back:hover {
+            color: #e7e9ea;
+        }
+        @media (max-width: 768px) {
+            .stats {grid-template-columns: repeat(2, 1fr);}
+            form {flex-direction: column; align-items: flex-start;}
+        }
+        
+        /* LOADER */
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 20, 25, 0.97);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            flex-direction: column;
+        }
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid #2f3b47;
+            border-top: 4px solid #1d9bf0;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin {
+            to {transform: rotate(360deg);}
+        }
+        .loader-text {
+            margin-top: 24px;
+            color: #e7e9ea;
+            font-size: 18px;
+            font-weight: 500;
+        }
+        .loader-subtext {
+            margin-top: 8px;
+            color: #8b98a5;
+            font-size: 14px;
+        }
+        .dots::after {
+            content: '';
+            animation: dots 1.5s infinite;
+        }
+        @keyframes dots {
+            0%, 20% {content: '';}
+            40% {content: '.';}
+            60% {content: '..';}
+            80%, 100% {content: '...';}
+        }
+    </style>
+</head>
+<body>
+    <!-- LOADER -->
+    <div id="loader">
+        <div class="spinner"></div>
+        <div class="loader-text">Подождите, работаем<span class="dots"></span></div>
+        <div class="loader-subtext">Собираем отчёт за период</div>
+    </div>
+
+    <div class="container">
+        <h1>Отчёт за период</h1>
+        
+        <form method="post" onsubmit="showLoader()">
+            <label>С:</label>
+            <input type="text" name="date_from" placeholder="01.01.2025">
+            <label>По:</label>
+            <input type="text" name="date_to" placeholder="31.01.2025">
+            <button type="submit">Получить отчёт</button>
+        </form>
+
+        {{if .Report}}
+            {{if .Report.Error}}
+                <div class="error">{{.Report.Error}}</div>
+            {{else}}
+                <div class="report-header">
+                    <h2>{{.Report.Period}}</h2>
+                    <p>Найдено постов: <strong>{{.Report.Count}}</strong></p>
+                </div>
+
+                <div class="stats">
+                    <div class="stat-card">
+                        <h3>Просмотры</h3>
+                        <p>{{.Report.Totals.Views}}</p>
+                        <small>~{{.Report.Avg.Views}} / пост</small>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Лайки</h3>
+                        <p>{{.Report.Totals.Likes}}</p>
+                        <small>~{{.Report.Avg.Likes}} / пост</small>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Репосты</h3>
+                        <p>{{.Report.Totals.Reposts}}</p>
+                        <small>~{{.Report.Avg.Reposts}} / пост</small>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Комментарии</h3>
+                        <p>{{.Report.Totals.Comments}}</p>
+                        <small>~{{.Report.Avg.Comments}} / пост</small>
+                    </div>
+                </div>
+
+                <div class="table-wrapper">
+                    <table>
+                        <tr>
+                            <th>Дата</th>
+                            <th>Текст</th>
+                            <th style="text-align:center;">👁</th>
+                            <th style="text-align:center;">❤️</th>
+                            <th style="text-align:center;">🔁</th>
+                            <th style="text-align:center;">💬</th>
+                        </tr>
+                        {{range .Report.Stats}}
+                        <tr>
+                            <td style="white-space:nowrap;"><a href="{{.Link}}" target="_blank">{{.Date}}</a></td>
+                            <td class="text-cell">{{.Text}}</td>
+                            <td class="num">{{.Views}}</td>
+                            <td class="num">{{.Likes}}</td>
+                            <td class="num">{{.Reposts}}</td>
+                            <td class="num">{{.Comments}}</td>
+                        </tr>
+                        {{end}}
+                    </table>
+                </div>
+            {{end}}
+        {{end}}
+        
+        <a href="/" class="back">← На главную</a>
+    </div>
+
+    <script>
+        function showLoader() {
+            document.getElementById('loader').style.display = 'flex';
+        }
+    </script>
+</body>
+</html>

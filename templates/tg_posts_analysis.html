@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Анализ Telegram постов</title>
+    <style>
+        * {margin:0; padding:0; box-sizing:border-box;}
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #0f1419;
+            color: #e7e9ea;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        .container {max-width: 1200px; margin: 0 auto;}
+        h1 {font-size: 24px; font-weight: 600; margin-bottom: 30px;}
+        h1 span {color: #8b98a5; font-weight: 400;}
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: #192734;
+            border: 1px solid #2f3b47;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .stat-card h3 {
+            color: #8b98a5;
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+        .stat-card p {
+            font-size: 28px;
+            font-weight: 600;
+            color: #1d9bf0;
+        }
+        .table-wrapper {
+            background: #192734;
+            border-radius: 12px;
+            border: 1px solid #2f3b47;
+            overflow: hidden;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        th, td {
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 1px solid #2f3b47;
+        }
+        th {
+            background: #22303c;
+            color: #8b98a5;
+            font-weight: 500;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+        tr:last-child td {border-bottom: none;}
+        tr:hover {background: #1c2732;}
+        .text-cell {max-width: 400px; color: #8b98a5;}
+        .num {text-align: center; color: #e7e9ea;}
+        .back {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 30px;
+            color: #8b98a5;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .back:hover {color: #e7e9ea;}
+        .demo-badge {
+            display: inline-block;
+            background: #2d1f21;
+            color: #f4aab9;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>
+            Анализ Telegram постов <span>({{.N}})</span>
+            <span class="demo-badge">DEMO</span>
+        </h1>
+
+        <div class="stats">
+            <div class="stat-card">
+                <h3>Просмотры</h3>
+                <p>{{.Totals.Views}}</p>
+            </div>
+            <div class="stat-card">
+                <h3>Реакции</h3>
+                <p>{{.Totals.Reactions}}</p>
+            </div>
+            <div class="stat-card">
+                <h3>Пересылки</h3>
+                <p>{{.Totals.Forwards}}</p>
+            </div>
+        </div>
+
+        <div class="table-wrapper">
+            <table>
+                <tr>
+                    <th>Дата</th>
+                    <th>Текст</th>
+                    <th style="text-align:center;">👁</th>
+                    <th style="text-align:center;">❤️</th>
+                    <th style="text-align:center;">↗️</th>
+                </tr>
+                {{range .Stats}}
+                <tr>
+                    <td style="white-space:nowrap;">{{.Date}}</td>
+                    <td class="text-cell">{{.Text}}</td>
+                    <td class="num">{{.Views}}</td>
+                    <td class="num">{{.Reactions}}</td>
+                    <td class="num">{{.Forwards}}</td>
+                </tr>
+                {{end}}
+            </table>
+        </div>
+        
+        <a href="/tg" class="back">← Назад</a>
+    </div>
+</body>
+</html>

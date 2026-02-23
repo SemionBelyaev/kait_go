@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>SMM-помощник • {{.ChannelName}}</title>
+    <style>
+        * {margin:0; padding:0; box-sizing:border-box;}
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #0f1419;
+            color: #e7e9ea;
+            min-height: 100vh;
+        }
+        header {
+            background: #192734;
+            padding: 60px 20px;
+            text-align: center;
+            border-bottom: 1px solid #2f3b47;
+        }
+        header h1 {font-size: 28px; font-weight: 600;}
+        header a {color: #e7e9ea; text-decoration: none;}
+        header p {margin-top: 12px; color: #8b98a5; font-size: 15px;}
+        .platform-switch {
+            max-width: 600px;
+            margin: 30px auto;
+            padding: 0 20px;
+            display: flex;
+            gap: 12px;
+        }
+        .platform-switch a {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        .platform-switch a.vk {
+            background: #2f3b47;
+            color: #8b98a5;
+        }
+        .platform-switch a.tg {
+            background: #1d9bf0;
+            color: #fff;
+        }
+        nav {
+            max-width: 600px;
+            margin: 20px auto 60px;
+            padding: 0 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        nav a {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 20px 24px;
+            background: #192734;
+            color: #e7e9ea;
+            text-decoration: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 500;
+            border: 1px solid #2f3b47;
+            transition: all 0.2s;
+        }
+        nav a:hover {
+            background: #22303c;
+            border-color: #3d5466;
+        }
+        nav a span {font-size: 24px;}
+        .notice {
+            max-width: 600px;
+            margin: 0 auto 30px;
+            padding: 16px 20px;
+            background: #2d1f21;
+            border: 1px solid #67262a;
+            border-radius: 12px;
+            color: #f4aab9;
+            font-size: 14px;
+        }
+        .notice strong {color: #fff;}
+    </style>
+</head>
+<body>
+    <header>
+        <h1><a href="{{.ChannelURL}}" target="_blank">{{.ChannelName}}</a></h1>
+        <p>SMM-помощник для анализа Telegram канала</p>
+    </header>
+
+    <div class="platform-switch">
+        <a href="/" class="vk">📘 VK Группа</a>
+        <a href="/tg" class="tg">✈️ Telegram Канал</a>
+    </div>
+
+    <div class="notice">
+        <strong>⚠️ Внимание:</strong> Telegram API ограничивает доступ ботов к истории каналов. 
+        Для полноценной работы требуется использование Telegram MTProto API или сохранение постов через webhook.
+    </div>
+
+    <nav>
+        <a href="/tg/posts_analysis"><span>📈</span>Анализ постов (демо)</a>
+        <a href="/"><span>📘</span>Вернуться к VK версии</a>
+    </nav>
+</body>
+</html>

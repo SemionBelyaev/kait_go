@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMM-помощник • {{.GroupName}}</title>
+    <style>
+        * {margin:0; padding:0; box-sizing:border-box;}
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #0f1419;
+            color: #e7e9ea;
+            min-height: 100vh;
+        }
+        header {
+            background: #192734;
+            padding: 60px 20px;
+            text-align: center;
+            border-bottom: 1px solid #2f3b47;
+        }
+        header h1 {
+            font-size: 28px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+        header a {
+            color: #e7e9ea;
+            text-decoration: none;
+        }
+        header p {
+            margin-top: 12px;
+            color: #8b98a5;
+            font-size: 15px;
+        }
+        nav {
+            max-width: 600px;
+            margin: 60px auto;
+            padding: 0 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        nav a {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 20px 24px;
+            background: #192734;
+            color: #e7e9ea;
+            text-decoration: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 500;
+            border: 1px solid #2f3b47;
+            transition: all 0.2s;
+        }
+        nav a:hover {
+            background: #22303c;
+            border-color: #3d5466;
+        }
+        nav a span {
+            font-size: 24px;
+        }
+        nav a.danger {
+            border-color: #67262a;
+        }
+        nav a.danger:hover {
+            background: #2d1f21;
+            border-color: #8b3539;
+        }
+        
+        /* LOADER */
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 20, 25, 0.97);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            flex-direction: column;
+        }
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid #2f3b47;
+            border-top: 4px solid #1d9bf0;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin {
+            to {transform: rotate(360deg);}
+        }
+        .loader-text {
+            margin-top: 24px;
+            color: #e7e9ea;
+            font-size: 18px;
+            font-weight: 500;
+        }
+        .loader-subtext {
+            margin-top: 8px;
+            color: #8b98a5;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <!-- LOADER -->
+    <div id="loader">
+        <div class="spinner"></div>
+        <div class="loader-text">Подождите, работаем...</div>
+        <div class="loader-subtext">Анализируем данные</div>
+    </div>
+
+    <header>
+        <h1><a href="{{.GroupURL}}" target="_blank">{{.GroupName}}</a></h1>
+        <p>SMM-помощник для анализа активности</p>
+    </header>
+    <nav>
+        <a href="/employee_activity" onclick="showLoader('Загружаем активность сотрудников...')">
+            <span>📊</span>Активность сотрудников
+        </a>
+        <a href="/posts_analysis" onclick="showLoader('Загружаем анализ постов...')">
+            <span>📈</span>Анализ постов
+        </a>
+        <a href="/date_range">
+            <span>📅</span>Отчёт за период
+        </a>
+        <a href="/clear_cache" class="danger">
+            <span>🗑️</span>Очистить кэш
+        </a>
+    </nav>
+
+    <script>
+        function showLoader(text) {
+            document.querySelector('.loader-subtext').textContent = text || 'Анализируем данные';
+            document.getElementById('loader').style.display = 'flex';
+        }
+    </script>
+</body>
+</html>
